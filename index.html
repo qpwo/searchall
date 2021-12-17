@@ -1,82 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>searchall</title>
-    <script src="x-frame-bypass.js"></script>
-    <style>
-      body {
-        margin-left: 15px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Searchall</h1>
-    <input type="text" id="textin" onkeydown="search(false)" />
-    <button onclick="search(true)">Search All</button>
-    <p>Current search engines: google, bing, petalsearch, brave, mojeek, rightdao, gigablast, gowiki, yandex</p>
-    <p>Current iframe proxy: proxy.megatunger.com</p>
-    <p>Last updated: 2021 December 17</p>
-    <div id="frames">
-    </div>
-    <script>
-      const items = [
-        {
-          url: (q) => `https://www.google.com/search?igu=1&q=${q}`,
-          proxy: false,
-        },
-        { url: (q) => `https://www.bing.com/search?q=${q}`, proxy: false },
-        {
-          url: (q) => `https://petalsearch.com/search?query=${q}`,
-          proxy: true,
-        },
-        {
-          url: (q) => `https://search.brave.com/search?q=${q}&source=web`,
-          proxy: true,
-        },
-        { url: (q) => `https://www.mojeek.com/search?q=${q}`, proxy: true },
-        {
-          url: (q) => `https://rightdao.com/search?q=${q}`,
-          proxy: false,
-        },
-        { url: (q) => `https://gigablast.com/search?q=${q}`, proxy: false },
-        { url: (q) => `https://www.gowiki.com/search?q=${q}`, proxy: false },
-        
-        { url: (q) => `https://yandex.com/search/?text=${q}&from=os`, proxy: true },
-      ];
-      const frames = document.getElementById("frames");
-      const textin = document.getElementById("textin");
-      function search(button) {
-        if (!(button || event.key === "Enter")) {
-          return;
-        }
-        const query = textin.value;
-        while (frames.firstChild) {
-          frames.removeChild(frames.firstChild);
-        }
-        const encodedQuery = encodeURIComponent(query)
-        for (const item of items) {
-          const { url, proxy } = item;
-          const finalUrl = url(encodedQuery);
-          const a = document.createElement("a");
-          a.href = finalUrl
-          a.innerText = finalUrl
-          const h3 = document.createElement('h3')
-          h3.appendChild(a)
-          frames.appendChild(h3)
-          const iframe = document.createElement("iframe", {
-            is: proxy ? "x-frame-bypass" : null,
-          });
-          frames.appendChild(iframe);
-          
-          iframe.width = window.innerWidth * 0.9;
-          iframe.height = window.innerHeight / 2;
-          iframe.style.marginTop = "10px";
-          iframe.src = finalUrl
-        }
-      }
-    </script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>searchall</title>
+        <script src="x-frame-bypass.js"></script>
+        <style>
+            body {
+                margin-left: 15px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Searchall</h1>
+        <input type="text" id="textin" onkeydown="search(false)" />
+        <button onclick="search(true)">Search All</button>
+        <p>Current search engines: google, bing, petalsearch, brave, mojeek, rightdao, gigablast, gowiki, yandex</p>
+        <p>Current iframe proxy: proxy.megatunger.com</p>
+        <p>Last updated: 2021 December 17</p>
+        <div id="frames"></div>
+        <script>
+            const items = [
+                {
+                    url: q => `https://www.google.com/search?igu=1&q=${q}`,
+                    proxy: false,
+                },
+                { url: q => `https://www.bing.com/search?q=${q}`, proxy: false },
+                {
+                    url: q => `https://petalsearch.com/search?query=${q}`,
+                    proxy: true,
+                },
+                {
+                    url: q => `https://search.brave.com/search?q=${q}&source=web`,
+                    proxy: true,
+                },
+                { url: q => `https://www.mojeek.com/search?q=${q}`, proxy: true },
+                {
+                    url: q => `https://rightdao.com/search?q=${q}`,
+                    proxy: false,
+                },
+                { url: q => `https://gigablast.com/search?q=${q}`, proxy: false },
+                { url: q => `https://www.gowiki.com/search?q=${q}`, proxy: false },
+
+                { url: q => `https://yandex.com/search/?text=${q}&from=os`, proxy: true },
+            ]
+            const frames = document.getElementById('frames')
+            const textin = document.getElementById('textin')
+            function search(button) {
+                if (!(button || event.key === 'Enter')) {
+                    return
+                }
+                const query = textin.value
+                while (frames.firstChild) {
+                    frames.removeChild(frames.firstChild)
+                }
+                const encodedQuery = encodeURIComponent(query)
+                for (const item of items) {
+                    const { url, proxy } = item
+                    const finalUrl = url(encodedQuery)
+                    const a = document.createElement('a')
+                    a.href = finalUrl
+                    a.innerText = finalUrl
+                    const h3 = document.createElement('h3')
+                    h3.appendChild(a)
+                    frames.appendChild(h3)
+                    const iframe = document.createElement('iframe', {
+                        is: proxy ? 'x-frame-bypass' : null,
+                    })
+                    frames.appendChild(iframe)
+
+                    iframe.width = window.innerWidth * 0.9
+                    iframe.height = window.innerHeight / 2
+                    iframe.style.marginTop = '10px'
+                    iframe.src = finalUrl
+                }
+            }
+        </script>
+    </body>
 </html>
