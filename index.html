@@ -14,17 +14,51 @@
             p {
                 margin-top: 0;
             }
+            .hide {
+                max-height: 99em;
+                opacity: 1;
+                height: auto;
+                overflow: hidden;
+                transition: opacity 1.5s linear, max-height 1.5s linear;
+            }
+            input[type='checkbox']:checked + div {
+                opacity: 0;
+                max-height: 0;
+                border: none;
+            }
+            input[type='checkbox'] {
+                position: absolute;
+                left: -999em;
+            }
+            .hswrap {
+                background-color: lightgray;
+            }
+            label {
+                display: block;
+                margin: 10px;
+            }
+            label:hover {
+                text-decoration: underline;
+            }
         </style>
     </head>
     <body>
-        <h1>Searchall</h1>
+        <h1>searchall: search everywhere at once</h1>
         <input type="text" id="textin" />
         <button onclick="doSearch()">Search All</button>
-        <p>Current search engines: google, bing, petalsearch, brave, mojeek, rightdao, gigablast, gowiki, yandex</p>
-        <p>Current iframe proxy: proxy.megatunger.com</p>
-        <p>Last updated: 2021 December 17</p>
-        <p>Add as a custom search in chrome with this query string: https://lukemiles.org/searchall?q=%s</p>
-        <p>Repo: https://github.com/qpwo/searchall</p>
+        <span class="hswrap"></span>
+        <label for="item-1">Details...</label>
+        <input type="checkbox" name="one" id="item-1" />
+        <div class="hide">
+            <p>Current search engines: google, bing, petalsearch, brave, mojeek, rightdao, gigablast, gowiki, yandex</p>
+            <p>Current iframe proxy: proxy.megatunger.com</p>
+            <p>Last updated: 2021 December 17</p>
+            <p>Add as a custom search in chrome with this query string: https://lukemiles.org/searchall?q=%s</p>
+            <p>
+                Please report problems and feature requests by filing an issue on the repo:
+                <a href="https://github.com/qpwo/searchall">github.com/qpwo/searchall</a>
+            </p>
+        </div>
         <div id="frames"></div>
         <script defer>
             const frames = document.getElementById('frames')
@@ -51,7 +85,7 @@
                 { url: q => `https://gigablast.com/search?q=${q}`, proxy: false },
                 { url: q => `https://www.gowiki.com/search?q=${q}`, proxy: false },
 
-                { url: q => `https://yandex.com/search/?text=${q}&from=os`, proxy: true },
+                { url: q => `https://yandex.com/search/?text=${q}&from=os`, proxy: false },
             ]
 
             textin.addEventListener('keypress', e => e.key === 'Enter' && doSearch())
@@ -80,7 +114,7 @@
                     url.searchParams.set('q', query)
                     history.pushState(null, '', url)
                 }
-                document.title = `${query} | Search All`
+                document.title = `${query} | searchall`
 
                 for (const item of items) {
                     const { url, proxy } = item
