@@ -10,17 +10,24 @@
             body {
                 margin-left: 15px;
             }
+            p {
+                margin-top: 0;
+            }
         </style>
     </head>
     <body>
         <h1>Searchall</h1>
-        <input type="text" id="textin" onkeydown="search(false)" />
-        <button onclick="search(true)">Search All</button>
+        <input type="text" id="textin" />
+        <button onclick="doSearch()">Search All</button>
         <p>Current search engines: google, bing, petalsearch, brave, mojeek, rightdao, gigablast, gowiki, yandex</p>
         <p>Current iframe proxy: proxy.megatunger.com</p>
         <p>Last updated: 2021 December 17</p>
+        <p>Add as a custom search in chrome with this query string: https://lukemiles.org/searchall?q=%s</p>
+        <p>Repo: https://github.com/qpwo/searchall</p>
         <div id="frames"></div>
-        <script>
+        <script defer>
+            const frames = document.getElementById('frames')
+            const textin = document.getElementById('textin')
             const items = [
                 {
                     url: q => `https://www.google.com/search?igu=1&q=${q}`,
@@ -45,17 +52,34 @@
 
                 { url: q => `https://yandex.com/search/?text=${q}&from=os`, proxy: true },
             ]
-            const frames = document.getElementById('frames')
-            const textin = document.getElementById('textin')
-            function search(button) {
-                if (!(button || event.key === 'Enter')) {
-                    return
-                }
-                const query = textin.value
+
+            textin.addEventListener('keypress', e => e.key === 'Enter' && doSearch())
+
+            function checkUrl() {
+                const urlSearchParams = new URLSearchParams(window.location.search)
+                const params = Object.fromEntries(urlSearchParams.entries())
+                if (!('q' in params)) return
+                if (textin.value === params.q) return
+                textin.value = params.q
+                search(params.q, false)
+            }
+
+            window.onpopstate = checkUrl
+            history.onpushstate = checkUrl
+            checkUrl()
+
+            function search(query, updateUrl = true) {
                 while (frames.firstChild) {
                     frames.removeChild(frames.firstChild)
                 }
                 const encodedQuery = encodeURIComponent(query)
+
+                if (updateUrl) {
+                    const url = new URL(location.href)
+                    url.searchParams.set('q', query)
+                    history.pushState(null, '', url)
+                }
+
                 for (const item of items) {
                     const { url, proxy } = item
                     const finalUrl = url(encodedQuery)
@@ -75,6 +99,16 @@
                     iframe.style.marginTop = '10px'
                     iframe.src = finalUrl
                 }
+            }
+
+            function maybeDoSearch() {
+                if (event.key === 'enter') {
+                    doSearch()
+                }
+            }
+
+            function doSearch() {
+                search(textin.value, true)
             }
         </script>
     </body>
