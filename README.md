@@ -4,6 +4,7 @@ Show results from different search engines in separate iframes on one page with 
 
 https://lukemiles.org/searchall/
 
+Discuss on hacker news: https://news.ycombinator.com/item?id=29600619
 
 ## Demo
 
