@@ -79,6 +79,7 @@
                     url.searchParams.set('q', query)
                     history.pushState(null, '', url)
                 }
+                document.title = `${query} | Search All`
 
                 for (const item of items) {
                     const { url, proxy } = item
