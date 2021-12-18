@@ -11,34 +11,27 @@
             body {
                 margin-left: 15px;
             }
-            p {
-                margin-top: 0;
-            }
             .hide {
-                max-height: 99em;
-                opacity: 1;
-                height: auto;
+                max-height: 0;
                 overflow: hidden;
-                transition: opacity 1.5s linear, max-height 1.5s linear;
             }
             input[type='checkbox']:checked + div {
-                opacity: 0;
-                max-height: 0;
+                max-height: 99em;
                 border: none;
             }
             input[type='checkbox'] {
                 position: absolute;
                 left: -999em;
             }
-            .hswrap {
+            label {
+                /* display: block; */
+                margin: 10px;
+                padding: 8px;
+                border-radius: 5%;
                 background-color: lightgray;
             }
-            label {
-                display: block;
-                margin: 10px;
-            }
             label:hover {
-                text-decoration: underline;
+                box-shadow: 0px 0px 4px black;
             }
         </style>
     </head>
@@ -46,7 +39,6 @@
         <h1>searchall: search everywhere at once</h1>
         <input type="text" id="textin" />
         <button onclick="doSearch()">Search All</button>
-        <span class="hswrap"></span>
         <label for="item-1">Details...</label>
         <input type="checkbox" name="one" id="item-1" />
         <div class="hide">
